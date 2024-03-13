@@ -1,0 +1,13 @@
+server:
+  port: 8091
+  
+spring:
+  application:
+    name: mediapp-exams
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://172.17.0.3:8761/eureka/

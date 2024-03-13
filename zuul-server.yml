@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://172.17.0.3:8761/eureka/ #Docker Network local replace localhost
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+  routes:
+    mediapp-security:
+      path: /login
+      url: http://localhost:8099
+    mediapp-consults:
+      path: /consults
+      url: http://172.17.0.6:8090
+    mediapp-exams:
+      path: /exams
+      url: http://172.17.0.7:8091
+    mediapp-medics:
+      path: /medics
+      url: http://172.17.0.8:8092
+    mediapp-patientes:
+      path: /patientes
+      url: http://localhost:8093
+    mediapp-specialties:
+      path: /specialties
+      url: http://localhost:8094
+      stripPrefix: false
+      filters:
+        pre:
+          preDecorationFilter:
+            enabled: true
+        customFilter:
+          com.tlaxcala.microservices.gateway.Prefilter:
+            pre: true
+            route: true
+            post: true
